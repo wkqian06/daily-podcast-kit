@@ -52,19 +52,41 @@ json.dump({'podcast':' '.join(s.split())},open(sys.argv[2],'w',encoding='utf-8')
   done
 
   echo "Rebuilding site..."
-  python3 scripts/build_site.py site
-  # HuggingFace serves static Spaces in 8 KB chunks and mangles UTF-8 characters that
-  # straddle a boundary. Must run LAST: it shifts byte offsets.
-  python3 scripts/align_utf8.py site/index.html || true
+  [ "$new" -eq 0 ] && echo "No new episode today — republishing what exists."
 
-  [ "$new" -eq 0 ] && echo "No new episode today — site rebuilt, nothing new to announce."
+  # ---- Delivery target 1: a public web page (HuggingFace static Space) ----------
+  # Optional. Set PODCAST_SPACE to enable.
+  if [ -n "${PODCAST_SPACE:-}" ]; then
+    echo "Building site..."
+    python3 scripts/build_site.py site
+    # HuggingFace serves static Spaces in 8 KB chunks and mangles UTF-8 characters
+    # that straddle a boundary. Must run LAST: it shifts byte offsets.
+    python3 scripts/align_utf8.py site/index.html || true
+    python3 scripts/publish_hf.py site
 
-  python3 scripts/publish_hf.py site
+    SERVE="https://$(echo "$PODCAST_SPACE" | tr '/' '-').static.hf.space"
+    code="$(curl -fsSL -o /dev/null -w '%{http_code}' --max-time 60 "$SERVE/" || echo 000)"
+    echo "Site serves HTTP $code"
+    [ "$code" = "200" ] || { echo "ERROR: site not serving after publish."; exit 1; }
+  fi
 
-  SERVE="https://$(echo "$PODCAST_SPACE" | tr '/' '-').static.hf.space"
-  code="$(curl -fsSL -o /dev/null -w '%{http_code}' --max-time 60 "$SERVE/" || echo 000)"
-  echo "Site serves HTTP $code"
-  [ "$code" = "200" ] || { echo "ERROR: site not serving after publish."; exit 1; }
+  # ---- Delivery target 2: a private podcast feed (Cloudflare Worker + R2) -------
+  # Optional. Set RSS_BASE and RSS_UPLOAD_TOKEN to enable.
+  # Independent of target 1: either can fail without stopping the other.
+  if [ -n "${RSS_BASE:-}" ] && [ -n "${RSS_UPLOAD_TOKEN:-}" ]; then
+    echo "Publishing to private RSS feed..."
+    UPLOAD_TOKEN="$RSS_UPLOAD_TOKEN" python3 scripts/publish_rss.py \
+        --base "$RSS_BASE" --episodes episodes \
+        --title "${PODCAST_TITLE:-Daily Podcast}" --author "${PODCAST_AUTHOR:-}" \
+        --description "${PODCAST_BLURB:-A private daily podcast.}" \
+      && echo "  RSS feed updated" \
+      || echo "  WARNING: RSS publish failed"
+  fi
+
+  if [ -z "${PODCAST_SPACE:-}" ] && [ -z "${RSS_BASE:-}" ]; then
+    echo "ERROR: no delivery target configured. Set PODCAST_SPACE and/or RSS_BASE."
+    exit 1
+  fi
 
   for d in episodes/*/; do
     [ -f "$d/episode.json" ] && [ -s "$d/script.txt" ] || continue

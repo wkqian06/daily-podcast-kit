@@ -12,8 +12,15 @@ Every episode is one page section with:
 * **comprehension questions** with hidden answers, written to test the reasoning rather than recall;
 * **further reading**, with every link verified to exist before publication.
 
-The whole series lives on one page you can page through like slides, with a drawer listing every
-episode. It is a static site, published free to a HuggingFace Space.
+## Two ways to receive it, both optional
+
+| | what you get | cost | docs |
+|---|---|---|---|
+| **Web page** | one page, all episodes, synced transcript, quiz, sources | free | [docs/WEB_PAGE.md](docs/WEB_PAGE.md) |
+| **Private RSS** | an unlisted feed for any podcast app, and the car | free tier | [docs/PRIVATE_RSS.md](docs/PRIVATE_RSS.md) |
+
+Run either, or both. They are independent — one failing never stops the other. The web page is a
+static HuggingFace Space; the feed is a Cloudflare Worker in front of R2, in `worker/`.
 
 ---
 
@@ -42,8 +49,10 @@ so in the log, and exits.
 
 * Python 3.10+
 * An `anthropic`-authenticated `claude` CLI on `PATH` (topic selection, writing, translation)
-* A HuggingFace account and a write token (free — static Spaces cost nothing)
-* Node (optional, only for the Playwright verification described in `LESSONS.md`)
+* For the web page: a HuggingFace account and a write token (free)
+* For the private feed: a Cloudflare account with R2 enabled (free tier; a card is required
+  to enable it even though a personal podcast stays well inside the free allowance)
+* Node, for the Worker and for the browser verification in `LESSONS.md`
 * A GPU helps: ten minutes of audio synthesizes in about thirty seconds on one, but CPU works
 
 ```bash
@@ -64,9 +73,16 @@ SETUP.md             first-run walkthrough
 prompts/
   pick_topic.md      the selection rules the agent applies when choosing for itself
   taste.example.md   a template for recording what your listener actually responds to
+docs/
+  WEB_PAGE.md        the public page target, and its three gotchas
+  PRIVATE_RSS.md     the private feed target: Cloudflare setup, start to finish
+worker/
+  src/index.js       the Worker: RSS, token auth, byte-range media streaming
+  wrangler.toml      deploy config
 scripts/
   prepare_episode.sh nightly: choose, write, verify, synthesize
-  daily_publish.sh   morning: build, publish, verify
+  daily_publish.sh   morning: build, publish to whichever targets are configured
+  publish_rss.py     captions from measured timings, upload, refresh the feed
   build_site.py      renders every episode into one paged site
   make_audio.py      Kokoro synthesis; also emits measured per-sentence timings
   translate_segments.py  segment-aligned translation, count-checked

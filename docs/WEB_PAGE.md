@@ -1,0 +1,98 @@
+# Web page — HuggingFace static Space
+
+The public-facing target: every episode accumulates on one page you can page through like
+slides, with a synced transcript, an optional second language, comprehension questions and
+citations. Static Spaces are free and need no server.
+
+Optional and independent of the private RSS feed. Run either, or both.
+
+---
+
+## What the page does
+
+* **One episode at a time**, with prev/next and a drawer listing everything. Opens on the
+  newest; `#004` in the URL deep-links an episode.
+* **The transcript follows the audio** and auto-scrolls, using per-sentence timings measured
+  during synthesis rather than estimated. Clicking any sentence seeks to it.
+* **A second-language transcript**, aligned sentence for sentence, behind a toggle that
+  remembers your choice.
+* **Comprehension questions** with hidden answers.
+* **Further reading**, every link verified to exist before publication.
+
+---
+
+## Setup
+
+### 1. Get a token
+
+Create a **write** token at <https://huggingface.co/settings/tokens>. In `config.env`:
+
+```bash
+HF_TOKEN="hf_..."
+PODCAST_SPACE="your-username/daily-podcast"     # created on first publish
+PODCAST_TITLE="Your Show"
+PODCAST_BLURB="One line about what it is."
+```
+
+### 2. Publish
+
+```bash
+set -a; source config.env; set +a
+python3 scripts/build_site.py site
+python3 scripts/align_utf8.py site/index.html
+python3 scripts/publish_hf.py site
+```
+
+The Space is created automatically. A new one takes a moment to build the first time.
+
+### 3. Check it on a phone
+
+Not optional. Two of the worst bugs in `LESSONS.md` were invisible on desktop.
+
+---
+
+## Three things that will bite you
+
+### The Space must be `static`
+
+Gradio and Docker Spaces need a PRO account and fail with `402 Payment Required`. The page
+is pure HTML and needs no server, so keep `sdk: static` in the Space README frontmatter —
+`publish_hf.py` writes this for you.
+
+### Audio can never be a plain file `src`
+
+HuggingFace signs each CDN URL for one byte range, which stalls audio forever on iOS Safari
+while working fine on desktop. `build_site.py` inlines small files as `data:` URIs and
+fetches larger ones whole into a blob. Full explanation in `LESSONS.md` §1.
+
+If you rewrite the player, keep this property. `LESSONS.md` §11 shows how to verify it.
+
+### `align_utf8.py` must run last
+
+HuggingFace processes served HTML in 8192-byte chunks and mangles any multi-byte character
+straddling a boundary — one character somewhere in the page becomes `�`, only on the live
+site, and it moves as you edit content. `align_utf8.py` nudges the byte layout so no
+character sits on a boundary. Anything that runs after it undoes the fix. `LESSONS.md` §2.
+
+---
+
+## Links inside the page
+
+HuggingFace renders static Spaces inside a sandboxed iframe. A link without a target
+navigates the frame to `huggingface.co`, which refuses to be framed, and the reader gets
+"refused to connect" while the address bar never changes.
+
+`target="_top"` does not help — the sandbox grants `allow-popups` but not
+`allow-top-navigation`. Use `target="_blank" rel="noopener"`, or a page-wide
+`<base target="_blank">`. `LESSONS.md` §8.
+
+---
+
+## Feedback
+
+Each Space has a Community tab. The page links to it once, quietly, in the appendix. It is
+worth wiring up: reader requests there are the highest-signal input to `prompts/taste.md`,
+which is what makes topic selection improve rather than drift.
+
+To collect them programmatically, `huggingface_hub`'s `get_repo_discussions` reads the tab
+and you can fold the results into the nightly prompt.

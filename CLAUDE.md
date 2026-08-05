@@ -37,6 +37,16 @@ A directory `episodes/NNN/` containing:
 
 ---
 
+## Two delivery targets, both optional
+
+| target | what it is | enable with | docs |
+|---|---|---|---|
+| web page | one public page, all episodes, synced transcript | `PODCAST_SPACE` | `docs/WEB_PAGE.md` |
+| private feed | unlisted RSS for podcast apps and the car | `RSS_BASE` + `RSS_UPLOAD_TOKEN` | `docs/PRIVATE_RSS.md` |
+
+They are independent: either can fail without stopping the other, and running neither is a
+configuration error the publish job refuses. The feed's Worker lives in `worker/`.
+
 ## The two jobs
 
 ```
@@ -61,6 +71,10 @@ read, veto or edit. Do not merge these two jobs.
 5. **Any failure exits.** Never publish a partial or unreviewed episode. LESSONS §10.
 6. **Verify in a real browser, emulating a phone.** Reading the HTML is not verification.
    LESSONS §11.
+7. **The Worker serves audio; never hand out a storage URL.** Per-range signed URLs stall
+   podcast clients that seek. LESSONS §1, `docs/PRIVATE_RSS.md`.
+8. **Any HTTP client you write sends a browser User-Agent.** Cloudflare's bot protection
+   rejects `Python-urllib` with 403 at the edge, before your Worker sees it.
 
 ---
 
@@ -114,3 +128,8 @@ Craft rules that matter, learned the hard way:
 | a button does nothing, no console error | LESSONS §7 — duplicate script |
 | link opens "refused to connect" inside the Space | LESSONS §8 — needs `target="_blank"` |
 | a citation 404s | LESSONS §9 — `check_links.py` should have caught it |
+| podcast app stalls or will not seek | `docs/PRIVATE_RSS.md` — is something handing out a storage URL? |
+| publish script gets 403 from Cloudflare | send a browser User-Agent; the edge blocks Python's default |
+| `SSL alert 40` on a new Worker | the workers.dev TLS cert takes ~1 min; poll `/health` |
+| `code: 10042` creating a bucket | R2 is not enabled yet; enable it in the dashboard |
+| transcripts do not show in a podcast app | usually the app, not the feed — `docs/PRIVATE_RSS.md` |

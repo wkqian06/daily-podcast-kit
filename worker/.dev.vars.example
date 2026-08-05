@@ -1,0 +1,3 @@
+# Local-only values for `wrangler dev`. Copy to .dev.vars — never commit the real thing.
+FEED_TOKEN = "localtestfeedtoken"
+UPLOAD_TOKEN = "localtestuploadtoken"

@@ -16,7 +16,17 @@ You also need the `claude` CLI on `PATH`, already authenticated. Check with:
 claude -p "reply with exactly: OK"
 ```
 
-## 2. Configure
+## 2. Choose your delivery targets
+
+Both are optional; configure at least one.
+
+* **Web page** — a public page with the synced transcript. Follow `docs/WEB_PAGE.md`.
+* **Private podcast feed** — subscribe in any podcast app. Follow `docs/PRIVATE_RSS.md`.
+
+The setup for each lives in its own doc because each has its own account, its own tokens and
+its own first-run friction. Come back here when you have the values.
+
+## 3. Configure
 
 ```bash
 cp config.env.example config.env
@@ -31,7 +41,7 @@ Fill in:
 
 `config.env` is gitignored. Keep it that way: it holds a token that can write to your account.
 
-## 3. Set up the taste file
+## 4. Set up the taste file
 
 ```bash
 cp prompts/taste.example.md prompts/taste.md
@@ -41,7 +51,7 @@ Edit it to describe who is listening. It will be mostly empty at first. That is 
 in as you react to episodes, and that is what makes topic selection improve. See the note in
 `README.md` about why this file matters more than it looks.
 
-## 4. Produce the example episode
+## 5. Produce the example episode
 
 This exercises the whole pipeline without publishing anything.
 
@@ -63,19 +73,19 @@ highlights as it plays.
 **Sanity check the duration.** It should be roughly `words / 150` minutes. If it is far shorter,
 read `LESSONS.md` §3.
 
-## 5. Publish
+## 6. Publish
 
 ```bash
-python3 scripts/publish_hf.py site
+scripts/daily_publish.sh          # publishes to whichever targets are configured
 ```
 
-It prints three URLs. Open the `SITE_URL` one. Give it a minute — a new Space takes a moment to
-build the first time.
+For the web page it prints a `SITE_URL`; give a brand-new Space a minute to build. For the
+feed, subscribe with `https://<worker>/f/<FEED_TOKEN>/feed.xml`.
 
 **Then check it on a phone.** This is not optional; the failure mode in `LESSONS.md` §1 is
 invisible on desktop and total on iOS.
 
-## 6. Schedule it
+## 7. Schedule it
 
 ```bash
 crontab -e
@@ -93,7 +103,7 @@ locations, but if your Python or `claude` lives somewhere unusual, add it there.
 
 Times are your machine's local time. Check with `timedatectl`.
 
-## 7. First week
+## 8. First week
 
 Read every episode before it goes out — that is what the nightly/morning gap is for. When you
 react to one, write the reaction into `prompts/taste.md`, including the times the agent guessed

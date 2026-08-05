@@ -1,0 +1,15 @@
+name = "private-podcast"          # rename if you like
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "private-podcast"          # rename if you like
+preview_bucket_name = "private-podcast"          # rename if you like
+
+[vars]
+FEED_TITLE = "The Daily Ten (private)"
+
+# Secrets are NOT set here. Set them with:
+#   npx wrangler secret put FEED_TOKEN     # long random string in the feed URL
+#   npx wrangler secret put UPLOAD_TOKEN   # bearer token for publishing

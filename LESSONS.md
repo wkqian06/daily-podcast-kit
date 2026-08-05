@@ -173,3 +173,68 @@ Also emulate a phone. A desktop-headless check passed while the real iPhone fail
 failure was iOS-specific. `p.chromium.launch()` with `p.devices["iPhone 13"]` catches layout and
 lazy-loading problems; it will not catch true WebKit-only issues, so treat a pass as necessary
 rather than sufficient.
+
+---
+
+## 12. Cloudflare's edge blocks Python before your Worker sees it
+
+**Symptom.** `curl` uploads fine. The identical request from a Python script gets `403`.
+
+**Cause.** Cloudflare's bot protection rejects the default `Python-urllib/3.x` User-Agent at
+the edge. The request never reaches the Worker, so there is nothing in your Worker logs and
+the status code does not match anything your code returns.
+
+**Fix.** Send a browser User-Agent from any client you write. `publish_rss.py` does.
+
+**Diagnostic worth remembering:** when a status code appears that your own code cannot
+produce, suspect the layer in front of it. Our Worker returns 404 for unauthorized, never
+403 — so a 403 immediately located the problem outside our code.
+
+---
+
+## 13. A new workers.dev subdomain has no TLS certificate for about a minute
+
+**Symptom.** DNS resolves to Cloudflare, but every request dies with
+`SSL alert 40 / handshake failure`. Looks exactly like a broken configuration.
+
+**Cause.** The certificate for a freshly registered `*.workers.dev` subdomain takes a short
+while to provision.
+
+**Fix.** Wait and poll. Do not start changing config.
+
+```bash
+until curl -sf https://<worker>.<sub>.workers.dev/health; do sleep 30; done
+```
+
+Related first-run friction, neither of which wrangler can do non-interactively: R2 must be
+enabled in the dashboard (`code: 10042` otherwise), and a workers.dev subdomain must be
+registered — that one *can* be done through the API, see `docs/PRIVATE_RSS.md`.
+
+---
+
+## 14. Do not percent-encode slashes inside object keys
+
+`encodeURIComponent("audio/ep1.m4a")` yields `audio%2Fep1.m4a`. Our own Worker happened to
+decode it, but stricter HTTP clients reject `%2F` in a path, and podcast apps are a
+long tail of stricter clients.
+
+Encode each path segment separately and keep the slashes.
+
+---
+
+## 15. The transcript tag is advisory; apps mostly ignore it
+
+The feed advertises captions with `<podcast:transcript>`, built from measured synthesis
+timings, so they are exact. Whether anyone shows them is another matter:
+
+* **Snipd** ignores the tag and runs its own AI transcription, rate-limited on the free plan.
+  So transcripts frequently do not appear — for any show, not just yours.
+* **Podverse** and other Podcasting 2.0 apps read the tag.
+* **Apple Podcasts** generates its own and ignores the tag.
+
+And **no third-party app can display a transcript on CarPlay at all** — Apple's templates do
+not expose synced text to third-party audio apps.
+
+The lesson generalises: when a spec says a field exists, that is not evidence any client
+uses it. Before promising a feature that depends on a client honouring metadata, check what
+the clients actually do.
