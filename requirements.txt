@@ -1,0 +1,16 @@
+# Text-to-speech (local, GPU-accelerated if available)
+kokoro
+soundfile
+numpy
+
+# Audio encoding without a system ffmpeg
+imageio-ffmpeg
+
+# Publishing to HuggingFace
+huggingface_hub>=0.24
+
+# HTML handling
+beautifulsoup4
+
+# Verification (optional but strongly recommended — see LESSONS.md §11)
+playwright

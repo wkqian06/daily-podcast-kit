@@ -1,0 +1,71 @@
+{
+  "number": 1,
+  "slug": "hinton-never-changed-his-mind",
+  "title": "The man who never changed his mind",
+  "subtitle": "Geoffrey Hinton is read as a builder who turned against his creation. He isn't. He has held one idea since the 1960s, and the warning is that idea reaching its conclusion",
+  "date": "2026-01-01",
+  "summary": "A profile of Geoffrey Hinton: the Boole family inheritance, twenty years of being wrong in public, the 2012 result that flipped the industry in a year, the Turing Award and a contested Nobel, and the 2023 resignation. The argument is that none of it is a change of heart. He spent fifty years insisting that minds are machines, he won, and winning is exactly what frightens him. Includes the parts profiles usually leave out: the credit he does not claim, the colleagues who disagree with him, and the late bet that failed.",
+  "further_reading": [
+    {
+      "title": "Geoffrey Hinton (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Geoffrey_Hinton",
+      "note": "The reliable spine of dates, positions and family. Free."
+    },
+    {
+      "title": "Rumelhart, Hinton & Williams (1986) — Learning representations by back-propagating errors, Nature 323, 533–536",
+      "url": "https://www.nature.com/articles/323533a0",
+      "note": "The paper everyone cites. Note what it actually claims: not that backpropagation is new, but that hidden layers learn useful representations by themselves. Paywalled."
+    },
+    {
+      "title": "The Nobel Prize in Physics 2024 — Hopfield and Hinton",
+      "url": "https://www.nobelprize.org/prizes/physics/2024/summary/",
+      "note": "The citation, and the committee's reasoning for why they considered this physics. Free."
+    },
+    {
+      "title": "ACM A.M. Turing Award 2018 — Bengio, Hinton, LeCun",
+      "url": "https://awards.acm.org/about/2018-turing",
+      "note": "The award all three shared, for the same body of work they now disagree about the consequences of. Free."
+    },
+    {
+      "title": "Geoffrey Hinton (Encyclopaedia Britannica)",
+      "url": "https://www.britannica.com/biography/Geoffrey-Hinton",
+      "note": "A compact, edited biography if you want one source rather than several. Free."
+    },
+    {
+      "title": "'Godfather of AI' Geoffrey Hinton predicts 2026 will see AI 'replace many other jobs' (Fortune)",
+      "url": "https://fortune.com/2025/12/28/geoffrey-hinton-godfather-of-ai-2026-prediction-human-worker-replacement/",
+      "note": "His current position in his own words, including the seven-month doubling claim and the argument that the problem is the economic system rather than the technology. Free."
+    },
+    {
+      "title": "Jürgen Schmidhuber — Critique of Honors 2018 (Turing Award for Deep Learning)",
+      "url": "https://people.idsia.ch/~juergen/critique-turing-award-bengio-hinton-lecun.html",
+      "note": "The other side of the credit question, argued at length and with citations. Read it as advocacy, but the specific priority claims are checkable. Free."
+    }
+  ],
+  "quiz": [
+    {
+      "q": "The episode argues Hinton's warnings are not a change of heart. What is the single belief that connects the 1970s heretic to the 2023 resignation, and why does it lead where it leads?",
+      "a": "The belief is that thinking is a physical process: there are no rules written anywhere in a brain, only a very large number of connections whose strengths change with experience, and therefore intelligence is something a learning system does rather than something a designer programs. That view was heresy when symbolic AI dominated. But if you hold it and you are right, two consequences follow without any further assumption. There is no special ingredient in biological tissue that machines lack. And there is no principled ceiling at human level, because nothing in the argument says the quantity of connections or the quality of learning stops there. The warning is that conclusion stated out loud, not a new position."
+    },
+    {
+      "q": "Hinton did not invent backpropagation. What did the 1986 paper actually establish, and why does the distinction matter for how you read his reputation?",
+      "a": "The mathematics predates him: Linnainmaa worked it out around 1970 and Werbos applied it to this class of problem in the 1970s. What the 1986 paper with Rumelhart and Williams showed was that training a multi-layer network this way causes the hidden layers to develop useful internal representations on their own, without anyone designing them. That is a claim about what learning produces, not about an algorithm. The distinction matters because the popular story compresses a long lineage into one inventor, and because Hinton himself has been consistent about the earlier credit. A reputation that survives being described accurately is worth more than one that needs the myth."
+    },
+    {
+      "q": "The idea was thirty years old in 2012. So what actually changed to make AlexNet possible, and what does that suggest about how progress in this field works?",
+      "a": "Two things that were not ideas: enough labelled images to learn from, in ImageNet, and graphics processors fast enough to make the arithmetic tractable. The architecture and the training method were not new in kind. This suggests a pattern worth carrying into any judgement about the field: capability jumps here have often come from scale and hardware crossing a threshold rather than from conceptual breakthroughs, which means an approach can look dead for decades while being merely early. It also cuts the other way, as a caution against assuming that today's limitations are conceptual when they might just be waiting for the next threshold."
+    },
+    {
+      "q": "The episode insists on mentioning that Yann LeCun disagrees with Hinton about existential risk. Why is that a load-bearing detail rather than a courtesy?",
+      "a": "Because the persuasive force of Hinton's warning is often taken to be that the people who built the technology are afraid of it, which implies a consensus among those best placed to know. LeCun shares the Turing Award with Hinton for the same body of work and does not share the worry. So the premise is false as stated. The honest version is narrower: some of the field's founders are alarmed and others are not, which means the disagreement has to be settled on arguments rather than on authority. Anyone citing Hinton's credentials as the reason to believe him should be equally moved by LeCun's."
+    },
+    {
+      "q": "Why does the episode bring up capsule networks, which failed, in a profile of someone's successes?",
+      "a": "Because it identifies the trait rather than flattering the man. Hinton kept working on neural networks through roughly twenty years in which the field considered them a dead end, and he was vindicated. He then bet heavily on capsule networks as a fix for what he saw as a deep flaw, and the field went to transformers instead. The same persistence produced both. That matters for how you weigh his current warnings: the disposition that made him right for decades is not a faculty that only activates when he happens to be correct, so his track record is evidence about his seriousness rather than a guarantee about this particular claim."
+    },
+    {
+      "q": "Hinton's claim about jobs is that AI will make a few people much richer and most people poorer. What kind of claim is that, and why is it worth separating from his other predictions?",
+      "a": "It is a claim about political economy, not about machine learning. The technical prediction is that systems will become capable of more tasks; the further step, that this produces concentrated gains and widespread loss, depends entirely on how ownership, taxation and bargaining power are arranged, not on anything inside the models. Separating the two matters because they are checked differently and can be acted on differently: the first is a forecast about capability that time will settle, while the second is a statement that the harm is a policy choice rather than an inevitability. Conflating them lets a technical authority carry weight on a question where his expertise does not obviously apply."
+    }
+  ]
+}

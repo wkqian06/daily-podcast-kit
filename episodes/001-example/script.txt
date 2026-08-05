@@ -1,0 +1,57 @@
+On Tuesday, in Las Vegas, a seventy-eight year old man will walk onto a conference stage alongside Fei-Fei Li and Andrew Ng. He is billed, as he always is now, as the godfather of artificial intelligence. And he will almost certainly spend his time on stage explaining why he is worried about it.
+
+Most people read that as a change of heart. The man who built the thing, turning against the thing. A late conversion, a deathbed confession.
+
+I want to argue that it is nothing of the kind. Geoffrey Hinton has believed one thing, more or less continuously, since he was a student in the nineteen sixties. For fifty years that belief made him a crank. Then it made him famous. And then, followed through to its end, it frightened him. The warning is not a reversal. It is the same idea arriving at its destination.
+
+Start with the family, because it is genuinely absurd.
+
+His great-great-grandfather was George Boole. That Boole. Boolean logic, the true-and-false algebra that every computer on earth runs on. Boole's wife, Mary Everest Boole, was herself a mathematician, and her uncle was George Everest, the surveyor the mountain is named after. Which is why Geoffrey Hinton's middle name is Everest. His great-grandfather, Charles Howard Hinton, was a mathematician who wrote about the fourth dimension and gave us the word tesseract. His father was an entomologist and a Fellow of the Royal Society.
+
+Hinton has said that growing up in that family, the message was fairly clear. You could become an academic, or you could be a disappointment.
+
+At Cambridge he could not settle. He started in physiology and physics, switched to philosophy, switched again, and finally took his degree in experimental psychology. What he was actually chasing, in all that switching, was one question: how does the brain work. Physics did not answer it. Philosophy did not answer it. Psychology, he decided, did not really answer it either.
+
+So he went to Edinburgh, to do a doctorate in artificial intelligence, which he finished in nineteen seventy-eight. His supervisor thought neural networks were a dead end. So did the field. Nine years earlier, Marvin Minsky and Seymour Papert had published a book that laid out what simple neural networks could not do, and the effect was to more or less end the subject. Funding went elsewhere. Serious people worked on something else.
+
+That something else was symbolic AI. The idea was that intelligence is reasoning, reasoning is manipulating symbols according to rules, so if you want a machine to be intelligent you write down the rules and the facts. Encode what a doctor knows and you get a machine that diagnoses.
+
+Hinton thought this was backwards, and his reason was biological. There are no rules written anywhere in your head. There is a very large number of cells, connected to each other, and the connections get stronger or weaker with experience. That is all there is. If that lump of tissue can recognize your grandmother, then recognizing your grandmother does not require rules. It requires the right connection strengths. And nobody could write those down by hand, so the machine would have to learn them.
+
+That is the belief. Thinking is a physical process. Whatever the brain is doing, it is doing it with adjustable connections, and therefore a machine with adjustable connections could do it too.
+
+In nineteen eighty-six he published a paper with David Rumelhart and Ronald Williams, in Nature, on backpropagation. This is the one everyone cites. And here I want to be careful, because the popular version gets it wrong. Hinton did not invent backpropagation. The mathematics had been worked out before, by Seppo Linnainmaa in nineteen seventy, and applied to this kind of problem by Paul Werbos in the seventies. What the nineteen eighty-six paper did was show that if you train a network this way, the middle layers learn useful internal representations on their own. Nobody designs them. They emerge. That was the demonstration that mattered, and Hinton has been consistently honest about the earlier credit, which is more than the field has always been.
+
+Then came twenty years of being wrong in public.
+
+Through the nineteen nineties and into the two thousands, neural networks lost. Support vector machines worked better on the problems people cared about, and they came with mathematical guarantees. Neural networks were slow, needed data nobody had, and were considered slightly embarrassing. Papers were rejected because of the words in the title. Students were advised to work on something with a future.
+
+Hinton moved to Canada. Partly because of where American AI money came from, which was largely military and which he did not want. Partly because a Canadian institute was willing to fund a small group doing unfashionable work for a long time with no obvious payoff. He, Yann LeCun and Yoshua Bengio kept going. It was not a large community.
+
+The payoff came in twenty twelve. Two of his graduate students, Alex Krizhevsky and Ilya Sutskever, entered a network in the ImageNet competition, a contest for classifying photographs. It did not edge out the competition. It demolished it, cutting the error rate by a margin that made the result look like a mistake. The thing that changed was not really the idea. The idea was thirty years old. What changed was that there were now enough images to learn from, and graphics cards fast enough to do the arithmetic.
+
+A few months later, Google paid roughly forty-four million dollars for a company with three employees, no product and no revenue. The company was Hinton and those two students. Within about a year, every large technology firm on earth had reorganized around this.
+
+Then the honours. The Turing Award in twenty eighteen, shared with Bengio and LeCun. And in twenty twenty-four, the Nobel Prize in Physics, shared with John Hopfield, which caused a certain amount of grumbling about whether any of this is physics. Hinton himself seemed to find it funny.
+
+And in May of twenty twenty-three, he left Google. He was specific about why, and the precision matters. He did not say Google had behaved badly. He said he wanted to be able to talk about the dangers without having to think about how it reflected on his employer. He resigned in order to be free to say something, not to protest something.
+
+So what is the something?
+
+Here is where the through-line closes. If you spend fifty years arguing that minds are machines, you do not get to be surprised when machines start to look like minds. That was the whole thesis. There is no magic ingredient in biological tissue. Intelligence is what a sufficiently large learning system does. Hinton won that argument. What he now says, roughly, is that having won it, he sees no principled reason why the machines should stop at our level, and no good plan for what happens when they do not.
+
+His recent claims are more concrete than the headlines suggest. He argues that the length of task a system can complete has been doubling every seven months or so, and asks what that curve looks like in a few years. On jobs, he has said something notably unusual for a technologist: that mass unemployment plus enormous profits is not a fact about AI but a fact about how we have arranged the economy. It will make a few people much richer and most people poorer. That is a claim about capitalism, not about neural networks.
+
+Now, three honest complications, because a profile that only admires is a press release.
+
+First, the title. Godfather of AI, father of AI. These are media inventions. Artificial intelligence as a field is older than Hinton's career and much wider than neural networks, and there are researchers, Jürgen Schmidhuber most vocally, who argue that the credit for these ideas has been systematically misassigned. The label flattens a crowded history into one face.
+
+Second, the experts do not agree. Yann LeCun, who shares the Turing Award with him, for the same work, thinks the existential worry is misguided. When you hear that the people who built this are frightened, remember that some of the people who built this are not.
+
+Third, and I think most usefully, Hinton has been wrong recently. His major late bet was capsule networks, an attempt to fix what he saw as a deep flaw in the systems he helped create. It did not work out. The field went a different way, with transformers. Which is worth holding onto, because the stubbornness that kept him working on neural networks through twenty years of ridicule is the same stubbornness that kept him on capsules. Being right for decades when everyone disagrees does not come from a faculty that only fires when you are right.
+
+One more thing, briefly, because it is part of the life and it is usually left out. His second wife, Rosalind, died of ovarian cancer in nineteen ninety-four. His third wife, Jacqueline, died of pancreatic cancer in twenty eighteen. He raised two children through the first of those. The wilderness decades were not only professional.
+
+What I keep coming back to is that this is not the story of a man who changed his mind. It is the story of a man who did not, for fifty years, against sustained evidence that he should. He argued the mind is a machine. He was right. And being right is precisely what worries him.
+
+Next time, something else entirely. Thanks for listening.
