@@ -2,15 +2,24 @@
 config.env
 
 # Generated audio and site output
-episodes/*/audio/
-episodes/*/narration.json
+weekly/audio/
 site/
 logs/
 .published
 
-# Keep the example episode's text so the repo demonstrates the format
-!episodes/001-example/episode.json
-!episodes/001-example/script.txt
+# Your own podcast. The kit is the code; what it produces is yours and stays here:
+# episodes/NNN/ the proposals, scripts, metadata and audio,
+# materials/NNN/ the papers you obtained by hand (publisher PDFs).
+# 001-example is the exception: a real episode kept as the format reference.
+episodes/*
+!episodes/001-example/
+materials/
+
+# Podcast material recovered from elsewhere. A local record, not part of the kit.
+archive/
+
+# Editor / agent workspace
+.claude/
 
 # Python
 __pycache__/

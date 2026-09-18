@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the podcast site from podcast/episodes/*/ into one page.
+"""Build the podcast site from episodes/*/ into one page.
 
 Every episode lives in its own folder (episode.json, script.txt, audio/) but they all
 render into a single index.html and a single HuggingFace Space — new episodes are
@@ -7,7 +7,7 @@ appended, nothing is replaced.
 
 Three things the page does beyond playing audio:
   * the transcript highlights in step with the audio and auto-scrolls, using the EXACT
-    per-sentence timings emitted by make_audio.py (Kokoro synthesizes sentence by
+    per-sentence timings emitted by `podcast.py audio` (Kokoro synthesizes sentence by
     sentence, so these are measured, not estimated);
   * clicking any sentence seeks the audio to it;
   * each episode ends with comprehension questions whose answers are hidden until asked for.
@@ -17,7 +17,7 @@ signs each CDN URL for ONE byte range, so a media element that range-requests a 
 file stalls forever on iOS Safari. Small files are inlined as data: URIs; anything
 larger gets a button that fetches the whole file once and plays it from a blob.
 
-Usage: build_podcast.py [output_dir]     (default: podcast/site)
+Usage: build_site.py [output_dir]     (default: site/)
 """
 import base64
 import html
@@ -25,14 +25,13 @@ import json
 import os
 import re
 import sys
+import shutil
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 EPISODES = os.path.join(ROOT, "episodes")
 INLINE_LIMIT = 700_000
 
-SPACE = os.environ.get("PODCAST_SPACE", "your-username/daily-podcast")
-DISCUSS = f"https://huggingface.co/spaces/{SPACE}/discussions"
 
 CSS = """
 *{box-sizing:border-box}
@@ -140,6 +139,16 @@ body.zh .transcript{line-height:1.85}
 .reading h3{font-size:14px;margin:0 0 8px}
 .reading ol{margin:0;padding-left:20px}
 .reading li{margin:.5em 0;font-size:14px}
+.palace{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.palace h3{font-size:14px;margin:0 0 4px}
+.palace p{margin:.85em 0;font-size:14px}
+.palace h4{font-size:13px;margin:14px 0 4px}
+.palace ul,.palace ol{margin:0;padding-left:20px}
+.palace li{margin:.4em 0;font-size:14px}
+.palace ul.takeaway{margin:.9em 0 0 2px;padding-left:22px;border-left:2px solid var(--line)}
+.palace ul.takeaway li{font-size:13px;color:var(--muted)}
+.palace ol.refs li{font-size:13px;color:var(--muted)}
+.palace ol.refs a{color:inherit;word-break:break-all}
 .reading a{color:var(--brand);font-weight:600}
 .reading .note{color:var(--muted);font-size:13px;display:block}
 footer{margin:26px 0 60px;padding-top:14px;border-top:1px solid var(--line);
@@ -293,7 +302,9 @@ def load_episodes():
     eps = []
     if not os.path.isdir(EPISODES):
         return eps
-    for name in sorted(os.listdir(EPISODES)):
+    # episodes/NNN/ only. `episodes/001-example/` is the repository's format reference and
+    # would otherwise render onto the page under a number someone else already owns.
+    for name in sorted(n for n in os.listdir(EPISODES) if n.isdigit()):
         d = os.path.join(EPISODES, name)
         meta_path = os.path.join(d, "episode.json")
         if not os.path.isfile(meta_path):
@@ -370,8 +381,11 @@ def player_html(ep, out_dir, aid):
         cand = os.path.join(ep["_dir"], "audio", "podcast-en" + ext)
         if os.path.exists(cand):
             dst = os.path.join(out_dir, rel_dir, "episode" + ext)
-            with open(cand, "rb") as a, open(dst, "wb") as b:
-                b.write(a.read())
+            # OneDrive may leave generated site files as reparse points. Remove that
+            # destination before writing the next generated copy.
+            if os.path.lexists(dst):
+                os.remove(dst)
+            shutil.copyfile(cand, dst)
             published.append(f"{rel_dir}/episode{ext}")
     primary, fallback = published[0], published[-1]
     size = os.path.getsize(os.path.join(out_dir, primary))
@@ -437,12 +451,47 @@ def episode_html(ep, out_dir):
                       f'{esc(r["title"])}</a>{note}</li>')
         parts.append(f'<div class="reading"><h3>Further reading</h3><ol>{items}</ol></div>')
 
+    pal = ep.get("palace") or {}
+    if pal.get("coverage"):                                   # docs/PALACE.md
+        an = pal.get("analysis") or {}
+        tak = an.get("takeaways") or {}
+
+        def section(k, title):
+            body = "".join(f'<p>{esc(p)}</p>' for p in an[k])
+            pts = "".join(f'<li>{esc(t)}</li>' for t in tak.get(k) or [])
+            return (f'<h4>{title}</h4>{body}'
+                    + (f'<ul class="takeaway">{pts}</ul>' if pts else ""))
+
+        paras = "".join(section(k, title)
+                        for k, title in (("adds", "What the sources add"),
+                                         ("differs", "Where they differ from the library"),
+                                         ("relates", "How they bear on the open questions"))
+                        if an.get(k))
+        refs = "".join('<li>' + re.sub(r'(https?://[^\s<]+)', r'<a href="\1" target="_blank" rel="noopener">\1</a>', esc(r))
+                       + '</li>' for r in pal.get("references") or [])
+        ing = "".join(f'<li>{esc(i["title"])} <span class="note">{esc(i["id"])}</span></li>'
+                      for i in pal.get("ingest") or [])
+        parts.append(f'<div class="palace"><h3>Against the library</h3>'
+                     f'<p class="hint">How this episode sits against the listener\'s own paper library. '
+                     f'Coverage: {esc(pal["coverage"])}.</p>{paras}'
+                     + (f'<h4>References</h4><ol class="refs">{refs}</ol>' if refs else "")
+                     + (f'<p class="hint">Read into the library after publication:</p><ul>{ing}</ul>' if ing else "")
+                     + '</div>')
+
     parts.append("</article>")
     return "".join(parts)
 
 
 def build(out_dir):
     os.makedirs(out_dir, exist_ok=True)
+    weekly_source = os.path.join(ROOT, "weekly")
+    weekly_output = os.path.join(out_dir, "weekly")
+    # Wiped first, not copied over: drafts/ is the editor's reading notes and must never reach
+    # the Space (docs/WEEKLY.md), and OneDrive leaves generated files as reparse points that
+    # a plain copy would write through. Rebuilding the directory settles both.
+    shutil.rmtree(weekly_output, ignore_errors=True)
+    shutil.copytree(weekly_source, weekly_output, dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns("drafts"))
     eps = load_episodes()
     body = "".join(episode_html(e, out_dir) for e in eps) or "<p>No episodes yet.</p>"
     menu = "".join(
@@ -450,6 +499,7 @@ def build(out_dir):
         f'<span class="t">{esc(e["title"])}</span>'
         f'<span class="d">{esc(e.get("date",""))}</span></a></li>'
         for e in eps)
+    DISCUSS = f"https://huggingface.co/spaces/{os.environ.get('PODCAST_SPACE', 'your-username/daily-podcast')}/discussions"
     TITLE = os.environ.get("PODCAST_TITLE", "The Daily Ten")
     BLURB = os.environ.get("PODCAST_BLURB",
         "Ten minutes on one thing worth understanding. A paper read closely, a story worth "
@@ -479,6 +529,7 @@ def build(out_dir):
   <ol>{menu}</ol>
 </nav>
 <div class="wrap">
+<p><a href="weekly/index.html" target="_self">Research Weekly · 文献周报 →</a></p>
 {body}
 <footer>
   <p>Want a topic covered, or a paper read closely?
@@ -493,10 +544,13 @@ def build(out_dir):
 """
     with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
-    print(f"build_podcast: {len(eps)} episode(s) -> {out_dir}/index.html "
+    print(f"build_site: {len(eps)} episode(s) -> {out_dir}/index.html "
           f"({os.path.getsize(os.path.join(out_dir, 'index.html'))/1024:.0f} KB)")
     return out_dir
 
 
 if __name__ == "__main__":
+    sys.path.insert(0, HERE)
+    from podcast import load_config     # titles and the Space link come from config.env
+    load_config()
     build(sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "site"))

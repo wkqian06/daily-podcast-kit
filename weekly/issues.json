@@ -1,0 +1,282 @@
+[
+  {
+    "id": "2026-09-14",
+    "number": 1,
+    "date": "2026-09-14",
+    "window": "2026-09-08 → 2026-09-14",
+    "title": {
+      "zh": "强对流环境：从参数判别到时空结构",
+      "en": "Severe-storm environments: beyond a winning parameter"
+    },
+    "subtitle": {
+      "zh": "第 1 期 · 专题阅读周报。围绕环境表征、风暴移动与预报可用性，重读三篇研究。覆盖时间指本期阅读整理周期，论文不限于本周发表。",
+      "en": "Issue 1 · A thematic reading issue on environmental representation, storm motion and forecast-time availability. The window describes this reading edition, not publication dates."
+    },
+    "thread": {
+      "zh": "参数能区分已有风暴的类型，并不等于能预测风暴是否发生。比较论文结论时，还需要对齐环境廓线、风暴移动来源和信息可得时刻。",
+      "en": "Discriminating among storms is not the same as predicting their occurrence. Comparing studies also requires aligning environmental profiles, storm-motion sources and information availability."
+    },
+    "note": {
+      "zh": "依据现有论文知识卡编排；各条目保留 Claim 与章节定位。本期跨论文联系为阅读综合，不代表作者共同结论。音频为已有相关专题节目，并非本期逐篇周报录音；未设置自动发布。",
+      "en": "Prepared from existing paper cards, with Claim and section anchors. Cross-paper connections are editorial synthesis. Audio is a related existing episode, not a recording of this weekly issue. Automatic publication is not configured."
+    },
+    "topics": {
+      "environment": {
+        "zh": "环境表征",
+        "en": "Environment"
+      },
+      "srh": {
+        "zh": "SRH 与移动",
+        "en": "SRH & motion"
+      },
+      "profile": {
+        "zh": "垂直结构",
+        "en": "Vertical profiles"
+      },
+      "forecast": {
+        "zh": "预报验证",
+        "en": "Verification"
+      }
+    },
+    "audio": [
+      {
+        "title": {
+          "zh": "本期速览 · 阅读摘要",
+          "en": "Quick overview · reading summary"
+        },
+        "note": {
+          "zh": "先看“本期线索”，再读 Coffer 的移动估计对照与 Chavas 的廓线实验。速览音频尚未录制。",
+          "en": "Start with the thread above, then the motion comparison in Coffer and the profile experiments in Chavas. A short audio introduction has not been recorded."
+        }
+      },
+      {
+        "title": {
+          "zh": "相关专题播客 · Given a Storm",
+          "en": "Related podcast · Given a Storm"
+        },
+        "note": {
+          "zh": "英语合成语音 · 环境判别与风暴发生的区别。完整逐字稿在播客页面。",
+          "en": "Synthesized English narration · environmental discrimination versus storm occurrence. The full transcript is on the podcast page."
+        },
+        "url": "../audio/ep001/episode.m4a"
+      }
+    ],
+    "papers": [
+      {
+        "title": {
+          "zh": "超级单体环境：解释不同龙卷数据集之间的分歧",
+          "en": "Supercell Environments Using GridRad-Severe and the HRRR: Addressing Discrepancies between Prior Tornado Datasets"
+        },
+        "authors": "Coffer, Parker, Coniglio & Homeyer",
+        "venue": "Weather and Forecasting",
+        "year": "2025",
+        "priority": {
+          "zh": "重点精读 · 数据构建影响",
+          "en": "Priority read · construction sensitivity"
+        },
+        "reading": {
+          "zh": "已有全文阅读卡",
+          "en": "Full-text reading card"
+        },
+        "source_coverage": "full-text",
+        "read_depth": "full",
+        "tags": [
+          "environment",
+          "srh",
+          "forecast"
+        ],
+        "url": "https://doi.org/10.1175/waf-d-24-0251.1",
+        "summary": {
+          "zh": "用 GridRad-Severe 识别的超级单体和 HRRR 入流环境，检验浅层与深层 SRH 判别结果为何随数据集改变。",
+          "en": "Uses GridRad-Severe supercells and HRRR inflow environments to investigate why shallow- versus deep-layer SRH discrimination changes across datasets."
+        },
+        "findings": [
+          {
+            "zh": "在该数据集中，用观测移动替换 Bunkers 估计，改变了 SRH 深度的技巧排序，SRH3 超过 SRH500。",
+            "en": "Within this dataset, replacing Bunkers estimates with observed motion reverses the depth ranking, with SRH3 outperforming SRH500."
+          },
+          {
+            "zh": "作者对预报应用保留条件：缺乏先验移动信息时，浅层 SRH 与估计移动仍可能更合用。",
+            "en": "The authors qualify forecast use: without prior motion information, shallow-layer SRH with estimated motion may remain more useful."
+          }
+        ],
+        "reason": {
+          "zh": "它把“结论不同”转化为可比较的数据构建选择，适合研究环境指标的时空依赖。",
+          "en": "It connects apparently conflicting conclusions to observable dataset-construction choices."
+        },
+        "relevance": {
+          "zh": "为强对流环境时空分析提供两条比较轴：移动估计方式，以及距事件的时间窗口。",
+          "en": "Provides two comparison axes for spatiotemporal analysis: motion estimation and the time window relative to an event."
+        },
+        "path": {
+          "zh": "先读 §5 与 Table 1 的移动对照，再读 §6 的预报适用条件与未决问题。",
+          "en": "Read the motion comparison in §5 and Table 1, then the forecast qualifications and open questions in §6."
+        },
+        "limits": {
+          "zh": "观测移动可能包含风暴发展后的信息；偏移移动是原因还是结果仍未解决。不同资料不能直接当作环境真值。",
+          "en": "Observed motion can include information arriving during storm development. Whether deviant motion is a cause or effect remains open, and a model analysis is not automatically environmental ground truth."
+        },
+        "evidence": "claim:coffer-2025-supercell#C4 · §5; #C7, #C10, #C11 · §6"
+      },
+      {
+        "title": {
+          "zh": "强对流环境探空的理想化物理模型",
+          "en": "An Idealized Physical Model for the Severe Convective Storm Environmental Sounding"
+        },
+        "authors": "Chavas & Dawson",
+        "venue": "Journal of the Atmospheric Sciences",
+        "year": "2021",
+        "priority": {
+          "zh": "方法精读 · 完整廓线",
+          "en": "Methods read · complete profiles"
+        },
+        "reading": {
+          "zh": "已有全文阅读卡",
+          "en": "Full-text reading card"
+        },
+        "source_coverage": "full-text",
+        "read_depth": "full",
+        "tags": [
+          "environment",
+          "profile"
+        ],
+        "url": "https://doi.org/10.1175/jas-d-20-0120.1",
+        "summary": {
+          "zh": "建立可独立调整边界层与自由对流层的理想化探空模型，并用数值实验考察整体参数未表达的垂直结构。",
+          "en": "Builds an idealized sounding model with adjustable boundary-layer and free-tropospheric structure, then tests information missed by bulk parameters."
+        },
+        "findings": [
+          {
+            "zh": "具有相近 SBCAPE 和低层整体切变的环境，在所展示实验中产生了持续时间不同的风暴。",
+            "en": "Environments with similar SBCAPE and low-level bulk shear produce different storm lifetimes in the illustrated experiments."
+          },
+          {
+            "zh": "修改低层水汽或自由对流层湿度后，理想化环境可以恢复持续超级单体。",
+            "en": "Changing low-level moisture or free-tropospheric humidity can restore a sustained supercell in the idealized environment."
+          }
+        ],
+        "reason": {
+          "zh": "说明相近的指数值不意味着相近的完整环境，提供保存与分析廓线的直接动机。",
+          "en": "Shows why similar index values do not imply equivalent environments, motivating complete-profile analysis."
+        },
+        "relevance": {
+          "zh": "环境时空聚类可保留水汽与浮力的垂直结构，随后检查它们是否提供整体参数之外的信息。",
+          "en": "Spatiotemporal clustering can retain moisture and buoyancy profiles, then test their information beyond bulk parameters."
+        },
+        "path": {
+          "zh": "先读 §3.4 的实验比较，再回看模型定义；最后核对作者关于归因范围的说明。",
+          "en": "Start with the experiments in §3.4, revisit the model definition, and check the limits on attribution."
+        },
+        "limits": {
+          "zh": "这些示例实验不用于划定稳健敏感性，也不能把行为差异干净归因到某一个廓线特征。",
+          "en": "The illustrative experiments do not establish robust sensitivities or isolate a single profile feature as the cause."
+        },
+        "evidence": "claim:chavas-2020-sounding#C2–C5, #C11 · §3.4"
+      },
+      {
+        "title": {
+          "zh": "由 RUC 获取的超级单体近邻探空",
+          "en": "Close Proximity Soundings within Supercell Environments Obtained from the Rapid Update Cycle"
+        },
+        "authors": "Thompson et al.",
+        "venue": "Weather and Forecasting",
+        "year": "2003",
+        "priority": {
+          "zh": "基础回读 · 判别样本",
+          "en": "Foundational read · discrimination samples"
+        },
+        "reading": {
+          "zh": "已有知识卡 · 章节锚点",
+          "en": "Existing card · section anchors"
+        },
+        "source_coverage": "full-text",
+        "read_depth": "full",
+        "tags": [
+          "forecast",
+          "environment"
+        ],
+        "url": "https://doi.org/10.1175/1520-0434(2003)018%3C1243:CPSWSE%3E2.0.CO;2",
+        "summary": {
+          "zh": "以模式分析探空建立风暴近邻样本，比较超级单体类别之间的环境参数，并讨论 SCP、STP 的适用范围。",
+          "en": "Constructs a proximity-sounding sample from model analyses, compares environments across storm classes and discusses SCP and STP applicability."
+        },
+        "findings": [
+          {
+            "zh": "低层湿度和切变在样本内具有判别信息；STP 阈值是基于特定样本的使用指引。",
+            "en": "Low-level moisture and shear provide discrimination within the sample; the STP threshold is a sample-based guideline."
+          },
+          {
+            "zh": "作者提醒：组合参数依赖对流模态判断，不能当作脱离条件的“魔法数字”。",
+            "en": "The authors caution that composite parameters depend on convective-mode prediction and are not magic numbers."
+          }
+        ],
+        "reason": {
+          "zh": "回到常用参数的建样方式，能看清后续研究沿用了哪些前提。",
+          "en": "Revisiting how familiar parameters were developed makes their inherited assumptions visible."
+        },
+        "relevance": {
+          "zh": "设计时空事件样本时，应区分风暴类型判别与环境中事件发生率的估计。",
+          "en": "When constructing spatiotemporal samples, distinguish storm-type discrimination from estimating event occurrence in the environmental population."
+        },
+        "path": {
+          "zh": "重点读 §2 的筛选、§4d 的参数与样本内技巧，以及 §3a 的探空误差边界。",
+          "en": "Read sample selection in §2, parameters and dependent-sample skill in §4d, and sounding-error qualifications in §3a."
+        },
+        "limits": {
+          "zh": "样本内的阈值表现不是独立预报验证；观测站附近的误差评估也未覆盖所有离站环境。",
+          "en": "Dependent-sample threshold performance is not independent forecast verification; errors near observation sites do not establish off-site fidelity."
+        },
+        "evidence": "claim:thompson-2003-soundings#C7 · §4d; #C10 · §3a; Limitations & gaps"
+      }
+    ],
+    "progress": [
+      {
+        "title": {
+          "zh": "正在充实：构建条件",
+          "en": "Progress: construction conditions"
+        },
+        "text": {
+          "zh": "从近邻探空到观测移动对照，资料和估计方式逐渐成为解释判别结果的显式条件。关联：Coffer C4、Thompson C10。",
+          "en": "Proximity soundings and motion comparisons make data and estimation choices explicit conditions of discrimination. Links: Coffer C4; Thompson C10."
+        }
+      },
+      {
+        "title": {
+          "zh": "仍待解决：廓线归因",
+          "en": "Open: profile attribution"
+        },
+        "text": {
+          "zh": "完整廓线有信息，但哪个层次、哪种结构在什么条件下起作用，仍需有控制的实验。关联：Chavas C11。",
+          "en": "Profiles contain information, but controlled experiments are still needed to isolate which structures matter under which conditions. Link: Chavas C11."
+        }
+      },
+      {
+        "title": {
+          "zh": "下一步：按可得时刻比较",
+          "en": "Next: compare at issue time"
+        },
+        "text": {
+          "zh": "阅读综合建议：在同一事件集内区分预报时可得移动与事后移动，再比较不同提前量下的 SRH 深度排序。",
+          "en": "Editorial proposal: separate forecast-available and retrospective motion on the same events, then compare SRH-depth rankings across lead times."
+        }
+      }
+    ],
+    "briefs": [
+      {
+        "category": {
+          "zh": "方法提醒",
+          "en": "METHOD NOTE"
+        },
+        "title": {
+          "zh": "“判别好”与“预测好”需要不同验证",
+          "en": "Discrimination and prediction need different verification"
+        },
+        "text": {
+          "zh": "阅读参数论文时，先确定样本是否已经以风暴发生为条件，再解释技巧。可从 Thompson 的样本内阈值讨论开始。",
+          "en": "Before interpreting skill, establish whether the sample is conditioned on storm occurrence. Start with Thompson’s dependent-sample threshold discussion."
+        },
+        "url": "https://doi.org/10.1175/1520-0434(2003)018%3C1243:CPSWSE%3E2.0.CO;2"
+      }
+    ]
+  }
+]

@@ -47,7 +47,7 @@ The boundaries are multiples of 8192 **in the stored file**, not in the served s
 
 Layout-dependent, so it appears and disappears as you edit content — which makes it look random.
 
-**Fix.** `scripts/align_utf8.py` inserts single spaces at `><` tag boundaries until no character
+**Fix.** `podcast.py align` inserts single spaces at `><` tag boundaries until no character
 sits on a multiple of 8192. Whitespace between tags is inert, so rendering is unchanged.
 **Run it last** in the pipeline: it shifts byte offsets, so anything that runs after it undoes it.
 
@@ -60,7 +60,7 @@ No error, no warning. The rest is simply missing.
 
 **Cause.** The model has a context limit of roughly 510 phoneme tokens and drops the overflow.
 
-**Fix.** `make_audio.py` splits on sentence boundaries and synthesizes piece by piece, joining
+**Fix.** `podcast.py audio` splits on sentence boundaries and synthesizes piece by piece, joining
 with 0.28 s gaps. Keep chunks well under the limit — 140 characters is the setting used here,
 which also gives finer transcript-highlight granularity.
 
@@ -72,7 +72,7 @@ is why.
 ## 4. Get the transcript timings from the synthesizer, not from an estimate
 
 Because the audio is synthesized sentence by sentence anyway, the exact start and end of each
-sentence is known for free. `make_audio.py` writes `audio/segments.json` with measured timings.
+sentence is known for free. `podcast.py audio` writes `audio/segments.json` with measured timings.
 
 Do not estimate timings from word counts. Measured timings make the highlight track perfectly
 and never drift, and clicking a sentence seeks to precisely the right place.
@@ -87,7 +87,7 @@ producing `dead.And` in the transcript. The regex consumed the separating whites
 If you translate the transcript as one block and re-split it, every timestamp is wrong and both
 the highlight and click-to-seek break.
 
-`translate_segments.py` translates segment by segment and **refuses to write output unless the
+`podcast.py translate` translates segment by segment and **refuses to write output unless the
 count matches exactly**. `build_site.py` re-checks the length and drops the translation if it
 disagrees, degrading to single-language with no toggle shown. A misaligned translation is worse
 than no translation.
@@ -142,7 +142,7 @@ The very first self-selected episode produced six further-reading links, one of 
 Wikipedia URL for a real book at a page that does not exist. The citation looked completely
 normal.
 
-`check_links.py` probes every citation before anything is synthesized and drops the dead ones.
+`podcast.py links` probes every citation before anything is synthesized and drops the dead ones.
 Critically, it distinguishes **dead** from **blocked**: publishers answer bots with 400/401/402/
 403/429 all the time (Nature, phys.org, Science), and treating those as dead would strip your
 best sources. Only a real 404/410 or a connection failure counts.
@@ -184,7 +184,7 @@ rather than sufficient.
 the edge. The request never reaches the Worker, so there is nothing in your Worker logs and
 the status code does not match anything your code returns.
 
-**Fix.** Send a browser User-Agent from any client you write. `publish_rss.py` does.
+**Fix.** Send a browser User-Agent from any client you write. `podcast.py rss` does.
 
 **Diagnostic worth remembering:** when a status code appears that your own code cannot
 produce, suspect the layer in front of it. Our Worker returns 404 for unauthorized, never
@@ -238,3 +238,36 @@ not expose synced text to third-party audio apps.
 The lesson generalises: when a spec says a field exists, that is not evidence any client
 uses it. Before promising a feature that depends on a client honouring metadata, check what
 the clients actually do.
+
+---
+
+## 16. A growing prompt kills the nightly job on Windows, months later
+
+`prepare` passed its prompt to the `claude` CLI as an argument. It worked for three episodes,
+then one night:
+
+```
+FileNotFoundError: [WinError 206] The filename or extension is too long
+```
+
+Nothing in the repository had changed. What changed was the KnowledgePalace library: with an
+empty queue the topic comes from the library's open questions, so `palace_header(with_gaps=True)`
+appends `gaps/INDEX.md` to the prompt. That file grows every time a gap is recorded. It crossed
+25 KB, the whole prompt reached 35 KB, and Windows caps an *entire command line* at 32767
+characters.
+
+**The failure is delayed and looks unrelated.** The job runs unattended, the traceback names
+`CreateProcess` rather than anything about prompts, and the only thing that "broke" was a file
+in a different repository getting longer. A queued topic still worked, because without gaps the
+prompt is 9 KB — so it failed on exactly the nights nobody had queued anything.
+
+**Fix.** Send the prompt on stdin; `claude -p` reads it there and no limit applies:
+
+```python
+cmd = [exe, "-p", "--allowedTools", *tools, ...]
+subprocess.run(cmd, input=prompt, ...)
+```
+
+The general rule: any prompt built by concatenating files you do not control is unbounded.
+Never put one on a command line — not on Windows, and not on Linux, where `ARG_MAX` is larger
+but equally finite.

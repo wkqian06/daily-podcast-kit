@@ -117,9 +117,7 @@ The nightly and morning jobs pick it up automatically.
 ### 8. Publish and subscribe
 
 ```bash
-set -a; source config.env; set +a
-UPLOAD_TOKEN="$RSS_UPLOAD_TOKEN" python3 scripts/publish_rss.py \
-    --base "$RSS_BASE" --episodes episodes --title "Your Show"
+python scripts/podcast.py rss        # reads RSS_BASE, RSS_UPLOAD_TOKEN and PODCAST_* from config.env
 ```
 
 Subscribe with:
@@ -134,7 +132,7 @@ https://private-podcast.<subdomain>.workers.dev/f/<FEED_TOKEN>/feed.xml
 
 **Cloudflare's bot protection blocks Python.** The default `Python-urllib/3.x` User-Agent
 gets a `403` at the edge, before the request reaches your Worker — while the identical
-request from curl succeeds. `publish_rss.py` sends a browser User-Agent for this reason. If
+request from curl succeeds. `podcast.py rss` sends a browser User-Agent for this reason. If
 you write your own client, do the same.
 
 **Do not percent-encode the slashes in object keys.** `encodeURIComponent("audio/ep1.m4a")`
@@ -158,8 +156,8 @@ cp .dev.vars.example .dev.vars
 npx wrangler dev --local --port 8787 &
 
 cd ..
-UPLOAD_TOKEN=localtestuploadtoken python3 scripts/publish_rss.py \
-    --base http://127.0.0.1:8787 --episodes episodes
+RSS_BASE=http://127.0.0.1:8787 RSS_UPLOAD_TOKEN=localtestuploadtoken python scripts/podcast.py rss
+# PowerShell: $env:RSS_BASE="http://127.0.0.1:8787"; $env:RSS_UPLOAD_TOKEN="localtestuploadtoken"; python scripts/podcast.py rss
 curl -s http://127.0.0.1:8787/f/localtestfeedtoken/feed.xml
 ```
 

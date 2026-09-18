@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Research Weekly · Podcast</title><link rel="stylesheet" href="weekly.css"></head>
+<body>
+<header class="top"><a class="logo" href="index.html">◈ <span>Research Weekly</span><small>RESEARCH WEEKLY</small></a><div class="tools"><a href="../index.html" data-zh="播客" data-en="Podcast">播客</a><button id="language" aria-label="Switch language">EN</button><button id="theme" aria-label="Toggle dark theme">◐</button></div></header>
+<main><div id="status" role="status">正在载入周报…</div><div id="report" hidden>
+<section class="hero"><div class="eyebrow">THE READING ROOM <span id="issue-label"></span></div><h1 id="title"></h1><p id="subtitle"></p><div class="meta" id="metadata"></div></section>
+<section class="takeaway"><span data-zh="本期线索" data-en="The thread">本期线索</span><p id="thread"></p></section>
+<div id="audio" class="audio-grid"></div>
+<div class="toolbar"><label><span data-zh="往期" data-en="Archive">往期</span> <select id="issues" aria-label="Issue"></select></label><input id="search" type="search" placeholder="搜索论文、概念…" aria-label="Search papers"></div>
+<nav id="filters" aria-label="Topics"></nav>
+<div class="section-title"><div><span class="eyebrow">01 / THE PAPERS</span><h2 data-zh="本期精读" data-en="Selected reading">本期精读</h2></div><span id="count"></span></div>
+<div id="papers"></div><p id="empty" hidden data-zh="没有匹配的论文。" data-en="No matching papers.">没有匹配的论文。</p>
+<section id="progress-section"><div class="section-title"><div><span class="eyebrow">02 / CONNECT THE EVIDENCE</span><h2 data-zh="研究进展与开放问题" data-en="Progress & open questions">研究进展与开放问题</h2></div></div><div id="progress" class="progress-grid"></div></section>
+<section id="briefs-section"><div class="section-title"><div><span class="eyebrow">03 / IN BRIEF</span><h2 data-zh="阅读短讯" data-en="Reading briefs">阅读短讯</h2></div></div><div id="briefs"></div></section>
+<footer><p id="note"></p><p>Research Weekly · Podcast <span>阅读 → 证据 → 新问题</span></p></footer>
+</div></main><script type="module" src="weekly.js"></script></body></html>

@@ -1,5 +1,7 @@
 # Text-to-speech (local, GPU-accelerated if available)
 kokoro
+# misaki (kokoro's English G2P) downloads this at first synthesis if missing; not on PyPI
+en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 soundfile
 numpy
 
@@ -9,8 +11,8 @@ imageio-ffmpeg
 # Publishing to HuggingFace
 huggingface_hub>=0.24
 
-# HTML handling
-beautifulsoup4
-
 # Verification (optional but strongly recommended — see LESSONS.md §11)
 playwright
+
+# On Windows the default torch wheel is CPU-only. For an NVIDIA GPU install torch first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
